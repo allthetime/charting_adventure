@@ -109,9 +109,9 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
 
 
     // manipulate position of months
-    var months_svg = d3.selectAll(".axis:nth-child(1) .tick")[0]
-    months_svg.forEach(function(month){
-        var month = d3.select(month);
+
+    d3.selectAll(".axis:nth-child(1) .tick").each(function(datum){
+        var month = d3.select(this);
         var old_attr = month.attr('transform')
         var x_translation = parseFloat(old_attr.split('(')[1].split(',')[0])
         x_translation += 20
@@ -160,7 +160,7 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
 console.log(quoteObjects)
 
 var parseDate = d3.time.format("%d-%b-%y").parse,
-    formatDate = d3.time.format("%d-%b"),
+    formatDate = d3.time.format("%b-%d-%y"),
     bisectDate = d3.bisector(function(d) { return d.date; }).left; // **
 
 
@@ -257,11 +257,11 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
                                    yScale(d.close) + ")")
               .text(d.close);
 
-            focus.select("text.y2")
-              .attr("transform",
-                    "translate(" + xScale(d.date) + "," +
-                                   yScale(d.close) + ")")
-              .text(d.close);
+            // focus.select("text.y2")
+            //   .attr("transform",
+            //         "translate(" + xScale(d.date) + "," +
+            //                        yScale(d.close) + ")")
+            //   .text(d.close);
 
             focus.select("text.y3")
               .attr("transform",
@@ -269,18 +269,18 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
                                    yScale(d.close) + ")")
               .text(formatDate(d.date));
 
-            focus.select("text.y4")
-              .attr("transform",
-                    "translate(" + xScale(d.date) + "," +
-                                   yScale(d.close) + ")")
-              .text(formatDate(d.date));
+            // focus.select("text.y4")
+            //   .attr("transform",
+            //         "translate(" + xScale(d.date) + "," +
+            //                        yScale(d.close) + ")")
+            //   .text(formatDate(d.date));
 
             focus.select(".x")
               .attr("transform",
                     "translate(" + xScale(d.date) + "," +
                                    yScale(d.close) + ")")
                          .attr("y2", HEIGHT - yScale(d.close));
-               
+
 
             focus.select(".y")
               .attr("transform",
