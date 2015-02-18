@@ -1,0 +1,205 @@
+{
+  "Outcome": "Success",
+  "Message": null,
+  "Identity": "Request",
+  "Delay": 0.0054224,
+  "MetalList": [{
+    "Name": "Federal Reserve Bank Silver Eagle 1 Oz 999/1000",
+    "Symbol": "AGEG",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Austrian National Bank Gold 1 Ducat coin",
+    "Symbol": "DUK1",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Austrian National Bank Gold 4 Ducat coin",
+    "Symbol": "DUK4",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Engelhard Gold",
+    "Symbol": "EngelhardGold",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Engelhard Palladium",
+    "Symbol": "EngelhardPalladium ",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Engelhard Platinum",
+    "Symbol": "EngelhardPlatinum",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Engelhard Silver",
+    "Symbol": "EngelhardSilver",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Swiss National Bank Helvetia Gold Coin",
+    "Symbol": "HEL20",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Iridium",
+    "Symbol": "Iridium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Reserve Bank of South Africa Gold Coin Kruegerrand 1 Oz 916.66/1000",
+    "Symbol": "KRUG",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Bank of Italy Gold Coin Italy .9332 Oz 900/1000",
+    "Symbol": "LIT20",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Bank of Canada Maple Leaf Gold Coin 1 Oz 999.9/1000",
+    "Symbol": "MAPL",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Bank of France Napoleon Gold Coin 20 FRF 0.20742 Oz 900/1000",
+    "Symbol": "NAPO",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Bank of England Elizabeth II Sovereign Gold Coin Ab 1974",
+    "Symbol": "NEWS",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Bank of England Victoria Sovereign Gold Coin",
+    "Symbol": "OLDS",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Osmium",
+    "Symbol": "Osmium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Palladium",
+    "Symbol": "Palladium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Platinum",
+    "Symbol": "Platinum",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Rhenium",
+    "Symbol": "Rhenium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Rhodium",
+    "Symbol": "Rhodium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Ruthenium",
+    "Symbol": "Ruthenium",
+    "Type": "Base Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Swiss National Bank Vreneli Gold Coin 10 CHF",
+    "Symbol": "VR10",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Swiss National Bank Vreneli Gold Coin 20 CHF",
+    "Symbol": "VR20",
+    "Type": "Metal Coin",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Silver 1 Oz",
+    "Symbol": "XAG",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Silver 1 Kg",
+    "Symbol": "XAGKG",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Gold 1 Oz",
+    "Symbol": "XAU",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Gold 1 Kg",
+    "Symbol": "XAUKG",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Palladium 1 Oz 999",
+    "Symbol": "XPD",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Palladium 1 Oz 999.5/1000",
+    "Symbol": "XPD9995",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Palladium 1 Kg 999",
+    "Symbol": "XPDKG",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Platinum 1 Oz 999",
+    "Symbol": "XPT",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Platinum 1 Oz 999.5/1000",
+    "Symbol": "XPT9995",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }, {
+    "Name": "Platinum 1 Kg 999",
+    "Symbol": "XPTKG",
+    "Type": "Precious Metal",
+    "Active": true,
+    "Message": null
+  }]
+}

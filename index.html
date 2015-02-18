@@ -1,0 +1,288 @@
+<script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+<script src="./d3.js"></script>
+<script src="./chart_test_d3.js"></script>
+
+<style>
+body{
+    background: black;
+}
+
+/*.axis path {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}*/
+</style>
+
+<svg id="visualisation" width="750" height="375"></svg>
+
+
+
+<script>
+
+Array.prototype.first = function(){
+    return this[0];
+}
+
+Array.prototype.last = function(){
+    return this[this.length-1];
+}
+
+var Historical = function(symbol, date, open, close, high, low, volume){
+    this.symbol = symbol;
+    this.date   = date;
+    this.open   = open;
+    this.close  = close;
+    this.high   = high;
+    this.low    = low;
+    this.volume = volume;
+}
+
+// We will already have JSON from server so we won't need to wrap it like this.
+
+$.getJSON('./data/yahoo_historical.json', function(data) {
+    var quoteObjects = [];
+    var MAXy = 0;
+    var MINy = 666666666666;
+    var quotes = data.query.results.quote
+    quotes.forEach(function(quote){
+
+        if (quote.Close > MAXy){
+            MAXy = quote.Close;
+        }
+        if (quote.Close < MINy){
+            MINy = quote.Close;
+        }
+
+        quoteObjects.push(new Historical(
+            quote.Symbol,
+            new Date(quote.Date),
+            quote.Open,
+            quote.Close,
+            quote.High,
+            quote.Low,
+            quote.Volume
+        ));
+    });
+    quoteObjects.sort(function(x,y){
+        return x.date - y.date
+    });
+
+    // $('#visualisation').width($(window).width())
+    // $('#visualisation').height($(window).width()/2)
+
+
+    var vis = d3.select("#visualisation"),
+    WIDTH = $('#visualisation').width(),
+    HEIGHT = $('#visualisation').width() / 2,
+    MARGINS = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 00
+    },
+    xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([quoteObjects.first().date,quoteObjects.last().date]),
+    yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([MINy,MAXy]),
+    xAxis = d3.svg.axis()
+        .scale(xScale),
+    yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left");
+
+
+
+    vis.append("svg:g")
+        .attr("class","axis")
+        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+        .call(xAxis);
+
+    vis.append("svg:g")
+        .attr("class","axis")
+        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+        .call(yAxis);
+
+
+
+    var lineGen = d3.svg.line()
+      .x(function(d) {
+        return xScale(d.date);
+      })
+      .y(function(d) {
+        return yScale(d.open);
+      })
+      .interpolate("basis");
+
+    var lineGen2 = d3.svg.line()
+      .x(function(d) {
+        return xScale(d.date);
+      })
+      .y(function(d) {
+        return yScale(d.close);
+      })
+      .interpolate("basis");
+
+
+// close
+    vis.append('svg:path')
+      .attr('d', lineGen2(quoteObjects))
+      .attr('stroke', 'red')
+      .attr('stroke-width', 1)
+      .attr('fill', '#111');
+
+// open
+    // vis.append('svg:path')
+    //   .attr('d', lineGen(quoteObjects))
+    //   .attr('stroke', 'blue')
+    //   .attr('stroke-width', 1)
+    //   .attr('fill', 'none');
+
+     var focus = vis.append("svg:g")                                // **********
+        .style("display", "none");                             // **********
+
+
+
+console.log(quoteObjects)
+
+var parseDate = d3.time.format("%d-%b-%y").parse,
+    formatDate = d3.time.format("%d-%b"),
+    bisectDate = d3.bisector(function(d) { return d.date; }).left; // **
+
+
+
+
+
+
+   // append the x line
+    focus.append("line")
+        .attr("class", "x")
+        .style("stroke", "white")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", HEIGHT);
+
+    // append the y line
+    focus.append("line")
+        .attr("class", "y")
+        .style("stroke", "white")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", WIDTH)
+        .attr("x2", WIDTH);
+
+    // append the circle at the intersection
+    focus.append("circle")                                 // **********
+        .attr("class", "y")                                // **********
+        .style("fill", "white")                             // **********
+        .style("stroke", "white")                           // **********
+        .attr("r", 4);                                     // **********
+
+    // place the value at the intersection
+    focus.append("text")
+        .attr("class", "y1")
+        .style("stroke", "none")
+        .style("fill", "white")
+        .style("font-family", "monospace")
+        // .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+
+    // focus.append("text")
+    //     .attr("class", "y2")
+    //     .attr("dx", 8)
+    //     .attr("dy", "-.3em");
+
+    // place the date at the intersection
+    focus.append("text")
+        .attr("class", "y3")
+        .style("stroke", "none")
+        .style("fill", "white")
+        .style("font-family", "monospace")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "1em");
+
+    // focus.append("text")
+    //     .attr("class", "y4")
+    //     .attr("dx", 8)
+    //     .attr("dy", "1em");
+
+
+
+    
+    // append the rectangle to capture mouse               // **********
+    vis.append("rect")                                     // **********
+        .attr("width", WIDTH)                              // **********
+        .attr("height", HEIGHT)                            // **********
+        .style("fill", "none")                             // **********
+        .style("pointer-events", "all")                    // **********
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);                       // **********
+
+    function mousemove() {                                 // **********
+        var x0 = xScale.invert(d3.mouse(this)[0]),              // **********
+            i = bisectDate(quoteObjects, x0, 1),                   // **********
+            d0 = quoteObjects[i - 1],                              // **********
+            d1 = quoteObjects[i],                                  // **********
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     // **********
+
+        focus.select("circle.y")                           // **********
+            .attr("transform",                             // **********
+                  "translate(" + xScale(d.date) + "," +         // **********
+                                 yScale(d.close) + ")");        // **********
+
+
+
+  focus.select("text.y1")
+      .attr("transform",
+            "translate(" + xScale(d.date) + "," +
+                           yScale(d.close) + ")")
+      .text(d.close);
+
+  focus.select("text.y2")
+      .attr("transform",
+            "translate(" + xScale(d.date) + "," +
+                           yScale(d.close) + ")")
+      .text(d.close);
+
+  focus.select("text.y3")
+      .attr("transform",
+            "translate(" + xScale(d.date) + "," +
+                           yScale(d.close) + ")")
+      .text(formatDate(d.date));
+
+  focus.select("text.y4")
+      .attr("transform",
+            "translate(" + xScale(d.date) + "," +
+                           yScale(d.close) + ")")
+      .text(formatDate(d.date));
+
+  focus.select(".x")
+      .attr("transform",
+            "translate(" + xScale(d.date) + "," +
+                           yScale(d.close) + ")")
+                 .attr("y2", HEIGHT - yScale(d.close));
+
+  focus.select(".y")
+      .attr("transform",
+            "translate(" + WIDTH * -1 + "," +
+                           yScale(d.close) + ")")
+                 .attr("x2", WIDTH + WIDTH);
+
+
+
+
+    }                        
+
+
+
+
+});
+
+</script>
