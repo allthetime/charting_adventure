@@ -7,15 +7,16 @@ body{
     background: black;
 }
 
-/*.axis path {
+.axis path {
     fill: none;
-    stroke: #777;
-    shape-rendering: crispEdges;
+    stroke: none;
+    /*shape-rendering: crispEdges;*/
 }
 .axis text {
-    font-family: Lato;
+    font-family: monospace;
     font-size: 13px;
-}*/
+    fill: white;
+}
 </style>
 
 <svg id="visualisation" width="750" height="375"></svg>
@@ -77,13 +78,13 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
 
 
     var vis = d3.select("#visualisation"),
-    WIDTH = $('#visualisation').width(),
-    HEIGHT = $('#visualisation').width() / 2,
+    WIDTH = $('#visualisation').width() - 100,
+    HEIGHT = ($('#visualisation').width() - 100) / 2,
     MARGINS = {
         top: 20,
         right: 20,
         bottom: 20,
-        left: 00
+        left: 40,
     },
     xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([quoteObjects.first().date,quoteObjects.last().date]),
     yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([MINy,MAXy]),
@@ -105,6 +106,17 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
         .attr("transform", "translate(" + (MARGINS.left) + ",0)")
         .call(yAxis);
 
+
+
+    // manipulate position of months
+    var months_svg = d3.selectAll(".axis:nth-child(1) .tick")[0]
+    months_svg.forEach(function(month){
+        var month = d3.select(month);
+        var old_attr = month.attr('transform')
+        var x_translation = parseFloat(old_attr.split('(')[1].split(',')[0])
+        x_translation += 20
+        month.attr('transform', "translate("+x_translation+",20) rotate(45 0 0)")
+    })
 
 
     var lineGen = d3.svg.line()
@@ -140,8 +152,8 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
     //   .attr('stroke-width', 1)
     //   .attr('fill', 'none');
 
-     var focus = vis.append("svg:g")                                // **********
-        .style("display", "none");                             // **********
+     var focus = vis.append("svg:g")                                
+        .style("display", "none");                             
 
 
 
@@ -175,11 +187,11 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
         .attr("x2", WIDTH);
 
     // append the circle at the intersection
-    focus.append("circle")                                 // **********
-        .attr("class", "y")                                // **********
-        .style("fill", "white")                             // **********
-        .style("stroke", "white")                           // **********
-        .attr("r", 4);                                     // **********
+    focus.append("circle")
+        .attr("class", "y")
+        .style("fill", "white")
+        .style("stroke", "white")
+        .attr("r", 4);
 
     // place the value at the intersection
     focus.append("text")
@@ -214,75 +226,69 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
 
 
 
-    
-    // append the rectangle to capture mouse               // **********
-    vis.append("rect")                                     // **********
-        .attr("width", WIDTH)                              // **********
-        .attr("height", HEIGHT)                            // **********
-        .style("fill", "none")                             // **********
-        .style("pointer-events", "all")                    // **********
+
+    // append the rectangle to capture mouse
+    vis.append("rect")
+        .attr("width", WIDTH)
+        .attr("height", HEIGHT)
+        .style("fill", "none")
+        .style("pointer-events", "all")
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove);                       // **********
+        .on("mousemove", mousemove);
 
-    function mousemove() {                                 // **********
-        var x0 = xScale.invert(d3.mouse(this)[0]),              // **********
-            i = bisectDate(quoteObjects, x0, 1),                   // **********
-            d0 = quoteObjects[i - 1],                              // **********
-            d1 = quoteObjects[i],                                  // **********
-            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     // **********
+    function mousemove() {
+        var x0 = xScale.invert(d3.mouse(this)[0]),
+            i = bisectDate(quoteObjects, x0, 1),
+            d0 = quoteObjects[i - 1],
+            d1 = quoteObjects[i];
 
-        focus.select("circle.y")                           // **********
-            .attr("transform",                             // **********
-                  "translate(" + xScale(d.date) + "," +         // **********
-                                 yScale(d.close) + ")");        // **********
+        if (d1) {
+           var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
+            focus.select("circle.y")
+                .attr("transform",
+                      "translate(" + xScale(d.date) + "," +
+                                     yScale(d.close) + ")");
 
+            focus.select("text.y1")
+              .attr("transform",
+                    "translate(" + xScale(d.date) + "," +
+                                   yScale(d.close) + ")")
+              .text(d.close);
 
-  focus.select("text.y1")
-      .attr("transform",
-            "translate(" + xScale(d.date) + "," +
-                           yScale(d.close) + ")")
-      .text(d.close);
+            focus.select("text.y2")
+              .attr("transform",
+                    "translate(" + xScale(d.date) + "," +
+                                   yScale(d.close) + ")")
+              .text(d.close);
 
-  focus.select("text.y2")
-      .attr("transform",
-            "translate(" + xScale(d.date) + "," +
-                           yScale(d.close) + ")")
-      .text(d.close);
+            focus.select("text.y3")
+              .attr("transform",
+                    "translate(" + xScale(d.date) + "," +
+                                   yScale(d.close) + ")")
+              .text(formatDate(d.date));
 
-  focus.select("text.y3")
-      .attr("transform",
-            "translate(" + xScale(d.date) + "," +
-                           yScale(d.close) + ")")
-      .text(formatDate(d.date));
+            focus.select("text.y4")
+              .attr("transform",
+                    "translate(" + xScale(d.date) + "," +
+                                   yScale(d.close) + ")")
+              .text(formatDate(d.date));
 
-  focus.select("text.y4")
-      .attr("transform",
-            "translate(" + xScale(d.date) + "," +
-                           yScale(d.close) + ")")
-      .text(formatDate(d.date));
+            focus.select(".x")
+              .attr("transform",
+                    "translate(" + xScale(d.date) + "," +
+                                   yScale(d.close) + ")")
+                         .attr("y2", HEIGHT - yScale(d.close));
+               
 
-  focus.select(".x")
-      .attr("transform",
-            "translate(" + xScale(d.date) + "," +
-                           yScale(d.close) + ")")
-                 .attr("y2", HEIGHT - yScale(d.close));
-
-  focus.select(".y")
-      .attr("transform",
-            "translate(" + WIDTH * -1 + "," +
-                           yScale(d.close) + ")")
-                 .attr("x2", WIDTH + WIDTH);
-
-
-
-
-    }                        
-
-
-
-
+            focus.select(".y")
+              .attr("transform",
+                    "translate(" + WIDTH * -1 + "," +
+                                   yScale(d.close) + ")")
+                         .attr("x2", WIDTH + WIDTH);
+        }
+    }
 });
 
 </script>
