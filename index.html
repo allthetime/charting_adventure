@@ -340,14 +340,16 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
         .on("mouseover", function() { focus.style("display", null); })
         .on("touchstart", function() { focus.style("display", null); dragging = true; })
         .on("mouseout", function() { focus.style("display", "none"); })
-        .on("touchend", function() { focus.style("display", "none"); dragging = false; })
-        .on("mousemove", mousemove)
-        .on("touchmove", function(e){ e.stopPropagation(); if (dragging) {mousemove()} });
+        .on("mousemove", mousemove);
 
 
     function mousemove() {
-        var x0 = xScale.invert(d3.mouse(this)[0]),
-            i = bisectDate(quoteObjects, x0, 1),
+        if(d3.touch(this)){
+            var x0 = xScale.invert(d3.touch(this)[0])
+        } else {
+            var x0 = xScale.invert(d3.mouse(this)[0])
+        }
+        var i = bisectDate(quoteObjects, x0, 1),
             d0 = quoteObjects[i - 1],
             d1 = quoteObjects[i];
 
