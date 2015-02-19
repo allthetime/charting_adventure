@@ -329,7 +329,7 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
     //     .attr("dy", "1em");
 
 
-
+    var dragging = false;
 
     // append the rectangle to capture mouse
     vis.append("rect")
@@ -338,10 +338,11 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
         .style("fill", "none")
         .style("pointer-events", "all")
         .on("mouseover", function() { focus.style("display", null); })
+        .on("touchstart", function() { focus.style("display", null); dragging = true; })
         .on("mouseout", function() { focus.style("display", "none"); })
-        .on("touchend", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove)
-        .on("touchmove", mousemove);
+        .on("touchend", function() { focus.style("display", "none"); dragging = false; })
+        .on("mousemove", mousemove);
+        .on("touchmove", function(){ if (dragging) mousemove() });
 
 
     function mousemove() {
@@ -364,30 +365,17 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
                                    yScale(d.close) + ")")
               .text(d.close);
 
-            // focus.select("text.y2")
-            //   .attr("transform",
-            //         "translate(" + xScale(d.date) + "," +
-            //                        yScale(d.close) + ")")
-            //   .text(d.close);
-
             focus.select("text.y3")
               .attr("transform",
                     "translate(" + xScale(d.date) + "," +
                                    yScale(d.close) + ")")
               .text(formatDate(d.date));
 
-            // focus.select("text.y4")
-            //   .attr("transform",
-            //         "translate(" + xScale(d.date) + "," +
-            //                        yScale(d.close) + ")")
-            //   .text(formatDate(d.date));
-
             focus.select(".x")
               .attr("transform",
                     "translate(" + xScale(d.date) + "," +
                                    yScale(d.close) + ")")
                          .attr("y2", HEIGHT - yScale(d.close));
-
 
             focus.select(".y")
               .attr("transform",
