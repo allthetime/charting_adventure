@@ -339,7 +339,10 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
         .style("pointer-events", "all")
         .on("mouseover", function() { focus.style("display", null); })
         .on("mouseout", function() { focus.style("display", "none"); })
+        .on("touchend", function() { focus.style("display", "none"); })
         .on("mousemove", mousemove);
+        .on("touchmove", mousemove);
+
 
     function mousemove() {
         var x0 = xScale.invert(d3.mouse(this)[0]),
