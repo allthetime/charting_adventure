@@ -5,6 +5,7 @@
 <style>
 body{
     background: black;
+    overflow:hidden;
 }
 
 .axis path {
@@ -15,7 +16,7 @@ body{
 .axis text {
     font-family: monospace;
     font-size: 13px;
-    fill: white;
+    fill: grey;
 }
 </style>
 
@@ -192,9 +193,11 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
     xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([quoteObjects.first().date,quoteObjects.last().date]),
     yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([MINy,MAXy]),
     xAxis = d3.svg.axis()
-        .scale(xScale),
+        .scale(xScale)
+        .tickValues( xScale.ticks( 2 ).concat( xScale.domain() ) ),
     yAxis = d3.svg.axis()
         .scale(yScale)
+        .tickValues( yScale.ticks( 2 ).concat( yScale.domain() ) )
         .orient("left");
 
 
@@ -213,13 +216,13 @@ $.getJSON('./data/yahoo_historical.json', function(data) {
 
     // manipulate position of months
 
-    d3.selectAll(".axis:nth-child(1) .tick").each(function(datum){
-        var month = d3.select(this);
-        var old_attr = month.attr('transform')
-        var x_translation = parseFloat(old_attr.split('(')[1].split(',')[0])
-        x_translation += 20
-        month.attr('transform', "translate("+x_translation+",20) rotate(45 0 0)")
-    })
+    // d3.selectAll(".axis:nth-child(1) .tick").each(function(datum){
+    //     var month = d3.select(this);
+    //     var old_attr = month.attr('transform')
+    //     var x_translation = parseFloat(old_attr.split('(')[1].split(',')[0])
+    //     x_translation += 20
+    //     month.attr('transform', "translate("+x_translation+",20) rotate(45 0 0)")
+    // })
 
 
     var lineGen = d3.svg.line()
