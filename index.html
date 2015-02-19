@@ -340,6 +340,7 @@ var parseDate = d3.time.format("%d-%b-%y").parse,
         .on("mouseover", function() { focus.style("display", null); })
         .on("touchstart", function() { focus.style("display", null); dragging = true; })
         .on("mouseout", function() { focus.style("display", "none"); })
+        .on("touchmove", mousemove)
         .on("mousemove", mousemove);
 
 
